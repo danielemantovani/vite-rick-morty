@@ -14,11 +14,13 @@ export default {
     };
   },
   created() {
+    this.isVisible = true,
     axios.get("https://rickandmortyapi.com/api/character")
 
     .then((resp) => {
       console.log(resp);
       this.cardsArray = resp.data.results;
+      this.isVisible = false;
     });
   },
 };
@@ -26,6 +28,7 @@ export default {
 <template>
   <div id="app">
     <AppHeader />
+    <div v-if = "isVisible">...Loading</div>
     <CardList :cardsArray = "cardsArray" />
   </div>
 </template>
