@@ -3,11 +3,13 @@ import { store } from "./store";
 import axios from "axios";
 import AppHeader from "./components/AppHeader.vue";
 import CardList from "./components/CardList.vue";
+import AppSearch from "./components/AppSearch.vue";
 
 export default {
   components: {
     AppHeader,
     CardList,
+    AppSearch,
   },
   data() {
     return {
@@ -16,20 +18,37 @@ export default {
     };
   },
   created() {
-    this.isVisible = true,
-    axios.get("https://rickandmortyapi.com/api/character")
-
-    .then((resp) => {
-      console.log(resp);
-      this.cardsArray = resp.data.results;
-      this.isVisible = false;
-    });
+    this.getCards();
   },
+  
+  methods:{
+    getCards (){
+      this.isVisible = true;
+      console.log(this.store.selectedStatus);
+      //creazione paramentri per la chiamata axios
+      const paramsObj = {
+      }
+      if(this.store.selectedStatus !== "All" ){
+          paramsObj.status = this.store.selectedStatus;
+      }
+      axios.get ("https://rickandmortyapi.com/api/character",{
+        params: paramsObj
+      })
+      .then ((resp) =>{
+        this.cardsArray = resp.data.results;
+        this.isVisible = false;
+      })
+    },
+  }
 };
 </script>
+
 <template>
   <div id="app">
     <AppHeader />
+    <AppSearch 
+    @filter="getCards"
+    />
     <div v-if = "isVisible">...Loading</div>
     <CardList :cardsArray = "cardsArray" />
   </div>
