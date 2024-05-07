@@ -1,4 +1,5 @@
 <script>
+import { store } from "./store";
 import axios from "axios";
 import AppHeader from "./components/AppHeader.vue";
 import CardList from "./components/CardList.vue";
@@ -11,6 +12,7 @@ export default {
   data() {
     return {
       cardsArray: [],
+      store,
     };
   },
   created() {
